@@ -1,0 +1,414 @@
+<style>
+    .form-shang{
+        display: inline-block;
+        width: 160px;
+        margin-top: 28px;
+    }
+    .btn-fa{
+        position: relative;
+        margin-top: -75px;
+        margin-left: 853px;
+    }
+    #myEditModal{
+        margin-top: 42px;
+    }
+    #myEditModal2{
+        margin-top: 42px;
+    }
+    .modal-backdrop.show{
+		z-index: -1;
+	}
+    .form-2{
+        margin-top: 28px;
+    }
+    .input{
+        margin-left: 18px;
+    }
+    .input1{
+        margin-left: 49px;
+    }
+    .input2{
+        margin-left: 18px;
+    }
+    .input3{
+        margin-left: 34px;
+    }
+</style>
+<div class="main">
+<!--面包屑导航-->
+    <div class="main">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">用户列表</a>
+            </li>
+        </ul>
+<!--添加导入按钮-->
+<button type="button" class="btn btn-secondary btn-fa" onclick="modalTian()">添加用户</button>
+    <!--下拉菜单-->
+    <div class="form-group form-shang">
+            <select class="form-control" id="one">
+                <option disabled selected hidden>学历</option>
+            </select>
+        </div>
+    <div class="form-group form-shang">
+        <select class="form-control" id="two">
+            <option disabled selected hidden>性别</option>
+        </select>
+    </div>
+    <!--表格-->    
+    <table id="user_tab" class="table table-md">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">用户名</th>
+                <th scope="col">姓名</th>
+                <th scope="col">手机号</th>
+                <th scope="col">性别</th>
+                <th scope="col">出生年月</th>
+                <th scope="col">最高学历</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        </table>
+<!--添加模态框-->
+    <div class="modal fade" id="myEditModal">
+        <div class="modal-dialog  modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group">
+                        <input type="hidden" name="id" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 300px;">
+                        <label for="exampleInputName2">用户名</label>
+                        <input type="text" name="username" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 300px;">
+                        <label for="exampleInputName2">密码</label>
+                        <input type="password" name="password" style="width: 200px;" class="form-control input1 " id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                      <label for="exampleInputName2">手机号</label>
+                      <input type="text" name="telephone" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">真实姓名</label>
+                        <input type="text" name="realname" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">学历</label>
+                        <input type="text" name="education" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">工作时间</label>
+                        <input type="text" name="workTime" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">性别</label>
+                        <input type="text" name="gender" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">求职状态</label>
+                        <input type="text" name="currentStatus" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">简历</label>
+                        <input type="text" name="resume" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">出生年月</label>
+                        <input type="text" name="birth" style="width: 200px;" class="form-control input2" id="exampleInputName2" >
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button id="commit" name="commit" type="button" class="btn btn-primary" onclick="commitData()">添加</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--修改模态框-->
+<div class="modal fade" id="myEditModal2">
+        <div class="modal-dialog  modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">修改用户</h4>
+            </div>
+            <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group">
+                        <input type="hidden" name="id" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 300px;">
+                        <label for="exampleInputName2">用户名</label>
+                        <input type="text" name="username" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 300px;">
+                        <label for="exampleInputName2">密码</label>
+                        <input type="password" name="password" style="width: 200px;" class="form-control input1 " id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                      <label for="exampleInputName2">手机号</label>
+                      <input type="text" name="telephone" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">真实姓名</label>
+                        <input type="text" name="realname" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">学历</label>
+                        <input type="text" name="education" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">工作时间</label>
+                        <input type="text" name="workTime" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">性别</label>
+                        <input type="text" name="gender" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">求职状态</label>
+                        <input type="text" name="currentStatus" style="width: 200px;" class="form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">简历</label>
+                        <input type="text" name="resume" style="width: 200px;" class="form-control input3" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                        <label for="exampleInputName2">出生年月</label>
+                        <input type="text" name="birth" style="width: 200px;" class="form-control input2" id="exampleInputName2" >
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button id="commit" name="commit" type="button" class="btn btn-primary" onclick="commitData2()">修改</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+    var baseUrl="http://47.106.244.1:7777/";
+    //加载数据
+    function lodeData(){
+        var url=baseUrl+"/Jobhunter/findAll"
+        $.get(url,function(result){
+            //清空tbody
+            $("#user_tab tbody").empty()
+            result.data.forEach(function(itme){
+                //追加数据
+                $(`<option value='`+itme.education+`'>`+itme.education+`</option>`).appendTo($("#one"))
+                $(`<option value='`+itme.gender+`'>`+itme.gender+`</option>`).appendTo($("#two"))
+                $(`<tr>
+                <td><input type="checkbox" value="`+itme.id+`"></td>
+                <td>`+itme.username+`</td>
+                <td>`+itme.realname+`</td>
+                <td>`+itme.telephone+`</td>
+                <td>`+itme.gender+`</td>
+                <td>`+itme.birth+`</td>
+                <td>`+itme.education+`</td>
+                <td>
+                    <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                    <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>`).appendTo("#user_tab tbody")
+            })
+        })
+    }
+    //添加模态框关闭
+    function closeModal(){
+        $("#myEditModal").modal("hide")
+    }
+    //添加模态框弹出
+    function modalTian(){
+        $("#myEditModal").modal("show")
+        //1.将表单内容清空
+        $("#myEditModal input[name=id]").val("");
+        $("#myEditModal input[name=username]").val("");
+        $("#myEditModal input[name=telephone]").val("");
+        $("#myEditModal input[name=realname]").val("");
+        $("#myEditModal input[name=education]").val("");
+        $("#myEditModal input[name=workTime]").val("");
+        $("#myEditModal input[name=currentStatus]").val("");
+        $("#myEditModal input[name=resume]").val("");
+        $("#myEditModal input[name=password]").val("");
+        $("#myEditModal input[name=birth]").val("");
+        $("#myEditModal input[name=gender]").val("");
+    }
+     //添加按钮提交数据
+    function commitData(){
+       var username= $("#myEditModal input[name=username]").val();
+       var telephone= $("#myEditModal input[name=telephone]").val();
+       var realname=$("#myEditModal input[name=realname]").val();
+       var education=$("#myEditModal input[name=education]").val();
+       var workTime=$("#myEditModal input[name=workTime]").val();
+       var currentStatus= $("#myEditModal input[name=currentStatus]").val();
+       var resume=$("#myEditModal input[name=resume]").val();
+       var password=$("#myEditModal input[name=password]").val();
+       var gender=$("#myEditModal input[name=gender]").val();
+       var birth=$("#myEditModal input[name=birth]").val();
+       var data={
+           username:username,
+           telephone:telephone,
+           realname:realname,
+           education:education,
+           workTime:workTime,
+           currentStatus:currentStatus,
+           resume:resume,
+           password:password,
+           gender:gender,
+           birth:birth
+       }
+       var url=baseUrl+"/Jobhunter/saveOrUpdate"
+        $.post(url,data,function(result){
+            if(result.status===200){
+                closeModal()
+                lodeData()
+            }else{
+                alert("添加失败")
+            }
+        })
+    }
+     //修改模态框关闭
+     function closeModal2(){
+        $("#myEditModal2").modal("hide")
+    }
+     //修改按钮提交数据
+     function commitData2(){
+       var id= $("#myEditModal2 input[name=id]").val();
+       var username= $("#myEditModal2 input[name=username]").val();
+       var telephone= $("#myEditModal2 input[name=telephone]").val();
+       var realname=$("#myEditModal2 input[name=realname]").val();
+       var education=$("#myEditModal2 input[name=education]").val();
+       var workTime=$("#myEditModal2 input[name=workTime]").val();
+       var currentStatus= $("#myEditModal2 input[name=currentStatus]").val();
+       var resume=$("#myEditModal2 input[name=resume]").val();
+       var password=$("#myEditModal2 input[name=password]").val();
+       var gender=$("#myEditModal2 input[name=gender]").val();
+       var birth=$("#myEditModal2 input[name=birth]").val();
+       var data={
+           id:id,
+           username:username,
+           telephone:telephone,
+           realname:realname,
+           education:education,
+           workTime:workTime,
+           currentStatus:currentStatus,
+           resume:resume,
+           password:password,
+           gender:gender,
+           birth:birth
+       }
+       var url=baseUrl+"/Jobhunter/saveOrUpdate"
+        $.post(url,data,function(result){
+            if(result.status===200){
+                closeModal2()
+                lodeData()
+            }else{
+                alert("修改失败")
+            }
+        })
+    }
+    //文档加载完毕后
+    $(function(){
+    //加载数据
+    lodeData()
+    //给删除修改按钮绑定事件
+    $("#user_tab").on("click","a",function(){
+        switch(this.className){
+            case "btn_del":
+            var id=$(this).parents("tr").children().eq(0).find("input").val()
+            var url=baseUrl+"/Jobhunter/deleteById"
+            var data={
+                id:id
+            }
+            $.post(url,data,function(result){
+                if(result.status===200){
+                    lodeData()
+                }else{
+                    alert("删除失败")
+                }
+            })
+            break;
+            case "btn_upd":
+            $("#myEditModal2").modal("show")
+            var id=$(this).parents("tr").children().eq(0).find("input").val();
+            var username=$(this).parents("tr").children().eq(1).text()
+            var realname=$(this).parents("tr").children().eq(2).text()
+            var telephone=$(this).parents("tr").children().eq(3).text()
+            var gender=$(this).parents("tr").children().eq(4).text()
+            var birth=$(this).parents("tr").children().eq(5).text()
+            var education=$(this).parents("tr").children().eq(6).text()
+
+            $("#myEditModal2 input[name=id]").val(id);
+            $("#myEditModal2 input[name=username]").val(username);
+            $("#myEditModal2 input[name=telephone]").val(telephone);
+            $("#myEditModal2 input[name=realname]").val(realname);
+            $("#myEditModal2 input[name=education]").val(education);
+            $("#myEditModal2 input[name=gender]").val(gender);
+            $("#myEditModal2 input[name=birth]").val(birth);
+        }
+    })
+    //监听select
+    $("#one").change(function(){
+        var val=$(this).val()
+        var data={
+            education:val
+        }
+        var url=baseUrl+"/Jobhunter/findByEducation"
+        $.get(url,data,function(result){
+            $("#user_tab tbody").empty()
+            result.data.forEach(function(itme){
+                $(`<tr>
+                <td><input type="checkbox" value="`+itme.id+`"></td>
+                <td>`+itme.username+`</td>
+                <td>`+itme.realname+`</td>
+                <td>`+itme.telephone+`</td>
+                <td>`+itme.gender+`</td>
+                <td>`+itme.birth+`</td>
+                <td>`+itme.education+`</td>
+                <td>
+                    <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                    <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>`).appendTo("#user_tab tbody")
+            })
+        })
+    })
+    $("#two").change(function(){
+        var val=$(this).val()
+        var data={
+            gender:val
+        }
+        $("#user_tab tbody").empty()
+        var url=baseUrl+"/Jobhunter/findByGender"
+        $.get(url,data,function(result){
+            result.data.forEach(function(itme){
+                $(`<tr>
+                <td><input type="checkbox" value="`+itme.id+`"></td>
+                <td>`+itme.username+`</td>
+                <td>`+itme.realname+`</td>
+                <td>`+itme.telephone+`</td>
+                <td>`+itme.gender+`</td>
+                <td>`+itme.birth+`</td>
+                <td>`+itme.education+`</td>
+                <td>
+                    <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                    <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>`).appendTo("#user_tab tbody")
+            })
+        })
+    })
+})
+</script>

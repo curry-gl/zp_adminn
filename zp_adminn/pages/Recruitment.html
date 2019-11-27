@@ -1,0 +1,408 @@
+<style>
+    #exampleFormControlSelect1{
+        width: 120px;
+    }  
+    #exampleFormControlSelect2{
+        width: 120px;
+        margin-top: 24px;
+    }  
+    .modal-backdrop.show{
+		z-index: -1;
+	}
+    #myEditModal{
+		margin-top: 42px;	
+	}
+    .form-group{
+        margin-top: 28px;
+    }
+    .form-1{
+        margin-top: 0px;
+    }
+    .btn-fa{
+        position: relative;
+        width: 100px;
+        height: 38px;
+        margin-left: 856px;
+        margin-top: -136px;
+    }
+    .form-zhi{
+        margin-top: -22px;
+    }
+    .form-zhiwei{
+        margin-top: -22px;
+    }
+  </style>
+  <div class="main">
+  <!--面包屑-->
+  <div class="layui-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">招聘中</li>
+            <li>招聘完结</li>
+          </ul>
+    <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+<!--内容1-->
+<!--发布招聘按钮-->
+<button id="commit" name="commit" type="button" class="btn btn-secondary btn-fa" onclick="commit()">发布职位</button>
+<!--下拉菜单-->
+  <div class="form-group form-zhi">
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option disabled selected hidden>职位类型</option>
+    </select>
+   </div>
+<!--表格-->
+<table id="recruiment_tab1" class="table table-md">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">招聘标题</th>
+            <th scope="col">发布人</th>
+            <th scope="col">联系方式</th>
+            <th scope="col">职位</th>
+            <th scope="col">发布时间</th>
+            <th scope="col">详情</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+<!--修改模态框-->
+<div class="modal fade" id="myEditModal">
+        <div class="modal-dialog  modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">修改招聘</h4>
+            </div>
+            <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group">
+                        <input type="hidden" name="id" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 800px;">
+                      <label for="exampleInputName2">兼职名称:</label>
+                      <input type="text" name="title" style="width: 600px;" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group"  style="width: 300px">
+                            <label for="exampleInputName2">选择工种:</label>
+                            <select id="five"  class="form-control" style="width:200px">
+                            </select>
+                    </div>
+                    <div class="form-group" style="width: 300px">
+                            <label for="exampleInputName2">招聘人数:</label>
+                            <input type="text" name="num" style="width: 200px" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group"style="width: 300px">
+                      <label for="exampleInputName2">招聘公司:</label>
+                      <select id="four" class="form-control" style="width:200px">
+                        
+                      </select>
+                    </div>
+                    <div class="form-group" style="width: 300px">
+                            <label for="exampleInputName2">薪资水平:</label>
+                            <input type="text" name="salary" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group" style="width: 300px">
+                            <label for="exampleInputName2">职位标签:</label>
+                            <input type="text" name="welfare" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group" style="width: 300px">
+                            <label for="exampleInputName2">职位状态:</label>
+                            <input type="text" name="status" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group" style="width: 800px">
+                      <label for="exampleInputName2">职位描述:</label>
+                      <textarea class="form-control" name="description" rows="4" style="width: 600px"></textarea>
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button id="commit" name="commit" type="button" class="btn btn-primary" onclick="commitData()">发布招聘</button>
+            </div>
+          </div>
+        </div>
+      </div>
+            </div>
+            <div class="layui-tab-item"><!--内容2-->
+            <!--下拉菜单-->
+  <div class="form-group form-zhiwei">
+    <select class="form-control" id="exampleFormControlSelect2">
+      <option disabled selected hidden>职位类型</option>
+    </select>
+</div>
+<!--表格-->
+<table id="recruiment_tab2" class="table table-md">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">招聘标题</th>
+            <th scope="col">发布人</th>
+            <th scope="col">联系方式</th>
+            <th scope="col">职位</th>
+            <th scope="col">发布时间</th>
+            <th scope="col">详情</th>
+            <th scope="col">状态</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+            </div>
+          </div>
+  </div>   
+  </div>
+  <script>
+	    var baseUrl="http://47.106.244.1:7777"
+       //加载数据
+       function lodeData1(){
+              var url=baseUrl+"/Employment/findAll"
+              $.get(url,function(result){
+                //清空tbody
+                $("#recruiment_tab1 tbody").empty()
+                //追加新的值
+                result.data.forEach(function(itme,index){
+                var newTr1=$(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+                  <td>
+                          <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                          <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>   
+                  </td>
+              </tr>`)
+              var newTr2=$(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a href="#">查看</a></td>
+                  <td>`+itme.status+`</td>
+              </tr>`)
+              if(itme.status=='招聘中'){
+                  $("#recruiment_tab1 tbody").append(newTr1);
+              }else{
+                $("#recruiment_tab2 tbody").append(newTr2);
+              }
+                })    
+              })
+        }
+       //转换时间
+       var dateParse=(dataString)=>{
+		  if(dataString){
+		    let date = new Date(dataString);
+		    let Y = date.getFullYear() + '-';
+		    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		    let D = (date.getDate()< 10 ? '0'+date.getDate() : date.getDate())+' ';
+		    let h = (date.getHours()< 10 ? '0'+date.getHours() : date.getHours())+ ':';
+		    let m = (date.getMinutes()< 10 ? '0'+date.getMinutes() : date.getMinutes())+ ':';
+		    let s = (date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds());
+		    return Y+M+D+h+m+s;
+		  }else{
+		    return '';
+		  }
+		} 
+      //文档加载完毕后
+      $(function(){
+          //加载数据
+        function lodeData(){
+              var url=baseUrl+"/Employment/findAll"
+              $.get(url,function(result){
+                //清空tbody
+                $("#recruiment_tab1 tbody").empty()
+                //追加新的值
+                result.data.forEach(function(itme,index){
+                var newTr1=$(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+                  <td>
+                          <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                          <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>   
+                  </td>
+              </tr>`)
+              var newTr2=$(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a href="#">查看</a></td>
+                  <td>`+itme.status+`</td>
+              </tr>`)
+              //给下拉菜单加载数据
+          function lodeOption(){
+            if(itme.status=='招聘中'){
+                $('<option value='+itme.job+'>'+itme.job+'</option>').appendTo($("#exampleFormControlSelect1"));
+            }else{
+                $('<option value='+itme.job+'>'+itme.job+'</option>').appendTo($("#exampleFormControlSelect2"));                   
+            }	           
+          }
+          lodeOption()
+              if(itme.status=='招聘中'){
+                  $("#recruiment_tab1 tbody").append(newTr1);
+              }else{
+                $("#recruiment_tab2 tbody").append(newTr2);
+              }
+                })    
+              })
+        }
+          //加载数据
+          lodeData()
+          //给删除，修改，详情按钮绑定事件
+          $("#recruiment_tab1").on("click","a",function(){
+              switch(this.className){
+                case "btn_del":
+                var id=$(this).parents("tr").children().eq(0).find("input").val()
+                var url=baseUrl+"/Employment/deleteById"
+                var data={
+                    id:id
+                }
+                $.post(url,data,function(result){
+                    if(result.status===200){
+                        lodeData()
+                    }else{
+                        alert("删除失败")
+                    }
+                })
+                break;
+                case "btn_upd":
+                $("#myEditModal").modal("show")
+                var url=baseUrl+"/Employment/findById"
+                var id=$(this).parents("tr").children().eq(0).find("input").val()
+                var data={
+                    id:id
+                }
+                $.ajax({
+                    url:url,
+                    method:"get",
+                    data:data,
+                    success:function(result){
+                        var resultData=result.data
+                        console.log(resultData)
+                        var title=resultData.title
+                        var job=resultData.job
+                        var num=resultData.num
+                        var businessId=resultData.businessId
+                        var salary=resultData.salary
+                        var welfare=resultData.welfare
+                        var status=resultData.status
+                        var description=resultData.description
+            $("#myEditModal input[name=id]").val(id);
+            $("input[name=title]").val(title)
+            $("input[name=status]").val(status)
+            $("input[name=num]").val(num)
+            $("input[name=salary]").val(salary)
+            $("input[name=welfare]").val(welfare)
+            $("textarea[name=description]").val(description)
+                    }
+                }) 
+        }  
+    })
+          
+    function dataOption(){
+        var url1=baseUrl+"/Jobs/findAll";
+        $.get(url1,function(result){
+            result.data.forEach(function(itme){
+                $(`<option value="`+itme.status+`">`+itme.status+`</option>`).appendTo("#five")
+            })
+        })
+        var url2=baseUrl+"/Business/findAll"
+        $.get(url2,function(result){
+            result.data.forEach(function(itme){
+                $(`<option value="`+itme.id+`">`+itme.name+`</option>`).appendTo("#four")
+            })
+        })
+    }
+    dataOption()
+})
+//提交数据事件
+function commit(){
+        $("#myEditModal").modal("show") 
+            var id=$("#recruiment_tab1 input[name=id]").val("");
+            var title=$("input[name=title]").val("")
+            var status=$("input[name=status]").val("")
+            var num=$("input[name=num]").val("")
+            var businessId=$("#four").val("")
+            var salary=$("input[name=salary]").val("")
+            var welfare=$("input[name=welfare]").val("")
+            var description=$("textarea[name=description]").val("")
+            var job=$("#five").val("")  
+    }
+//发布招聘绑定事件
+function commitData(){
+            var id=$("#myEditModal input[name=id]").val();
+            var title=$("input[name=title]").val()
+            var status=$("input[name=status]").val()
+            var num=$("input[name=num]").val()
+            var businessId=$("#four").val()
+            var salary=$("input[name=salary]").val()
+            var welfare=$("input[name=welfare]").val()
+            var description=$("textarea[name=description]").val()
+            var job=$("#five").val()
+        var url=baseUrl+"/Employment/saveOrUpdate"
+        var data={
+            id:id,
+            title:title,
+            job:job,
+            num:num,
+            businessId:businessId,
+            salary:salary,
+            welfare:welfare,
+            status:status,
+            description:description
+        }
+        console.log(data)
+        $.post(url,data,function(result){
+            if(result.status===200){
+                close()
+                lodeData1()
+            }else{
+                alert("添加失败")
+            }
+        })
+} 
+function close(){
+    $("#myEditModal").modal("hide") 
+}
+//监听select
+$("#exampleFormControlSelect1").change(function(){
+  var val=$(this).val()
+  console.log(val)
+  var data={
+    job:val
+  }
+  var url=baseUrl+"/Employment/findByJob"
+  $("#recruiment_tab1 tbody").empty()
+  $.get(url,data,function(result){
+    result.data.forEach(function(itme){
+      $(`<tr>
+          <td><input type="checkbox" value="`+itme.id+`"></td>
+          <td>`+itme.title+`</td>
+          <td>`+itme.contactName+`</td>
+          <td>`+itme.contactPhone+`</td>
+          <td>`+itme.job+`</td>
+          <td>`+dateParse(itme.publishTime)+`</td>
+          <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+          <td>
+                  <a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+                  <a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>   
+          </td>
+      </tr>`).appendTo("#recruiment_tab1 tbody")
+    })
+  })
+})
+  </script>

@@ -1,0 +1,80 @@
+<div class="main">
+<!--添加省份按钮-->
+<button type="button" class="btn btn-secondary btn-fa" >添加省份</button>
+<!--内容区-->
+<div class="title"><span>北京</span></div>
+<div class="content" id="con">
+</div>
+</div>
+<style>
+    .btn-fa{
+        margin-left: 830px;
+        margin-top: -8px;
+    }
+    .title{
+        width: 1000px;
+        height: 28px;
+        background-color: #333;
+        margin-top: 28px;
+        color: #fff;
+    }
+    .title span{
+        margin-left: 18px;
+    }
+    .content{
+        width: 1000px;
+        border: 1px solid #333;
+    }
+    .content span{
+        display: inline-block;
+        width: 80px;
+        text-align: center;
+        font-size: 14px;
+    }
+    .content input{
+        margin-left: 18px;
+        margin-bottom: 8px;
+        height: 22px;
+        width: 160px;
+    }
+    .content .a{
+        display: inline-block;
+        width: 48px;
+        text-align: left;
+    }
+</style>
+<script>
+	var baseUrl="http://47.106.244.1:7777"
+    //后台拿数据
+    var url=baseUrl+"/City/findAll"
+    function lodeData(){
+        $("#con").empty()
+    $.get(url,function(result){
+        result.data.forEach(function(itme){
+            $(`<span>`+itme.name+`</span>`).appendTo("#con")
+        })
+    
+        $(`<input type="text" name="city"> <span class="a"><a href="javascript:void(0)" onclick="addData()">添加</a></sapn>`).appendTo("#con")
+    })
+}
+    //添加数据
+    function addData(){
+        var val=$("#con input[name=city]").val()
+        var data={
+            name:val
+        }
+        var url=baseUrl+"/City/saveOrUpdate"
+        $.post(url,data,function(result){
+            if(result.status===200){
+                lodeData()
+            }else{
+                alert("添加失败")
+            }
+        })
+    } 
+    //文档加载完毕后
+    $(function(){
+      lodeData() 
+      
+    })
+</script>

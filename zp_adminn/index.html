@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>招聘网站后台</title>
+  <link rel="stylesheet" href="./layui/css/layui.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/router.js"></script>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo"></div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+   <!--  <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+    </ul> -->
+    <div>
+      <!-- <img src="images/ww.png" style="position:absolute;left:83%;top:13%;"> -->
+    </div>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          John Doe
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">退出</a></dd>
+          <!-- <dd><a href="">安全设置</a></dd> -->
+        </dl>
+      </li>
+      <!-- <li class="layui-nav-item"><a href="">退了</a></li> -->
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" id="nav"  lay-filter="test">
+        <!-- <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">所有商品</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="javascript:;">列表三</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">解决方案</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li> -->
+        <li class="layui-nav-item"><a href="javascript:;"> <i class="layui-icon">&#xe68e;</i><span id="first">首页</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe66f;</i><span>商家管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe655;</i><span>招聘管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe770;</i><span>用户管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe620;</i><span>模块管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe606;</i><span>客服管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe631;</i><span>权限管理</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe63b;</i><span>求职联系</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#x1005;</i><span>审核模块</span></a></li>
+        <li class="layui-nav-item "><a href="javascript:;"><i class="layui-icon">&#xe653;</i><span>app管理</span></a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body" id="content">
+    <!-- 内容主体区域 -->
+   <!--  <div style="padding: 15px;">内容主体区域</div> -->
+    <div class="main">
+        这是首页
+  </div>
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    <!-- © layui.com - 底部固定区域 -->
+  </div>
+</div>
+<script src="./layui/layui.js"></script>
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+
+</body>
+</html>

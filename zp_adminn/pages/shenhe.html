@@ -1,0 +1,471 @@
+<style>
+	.form-group{
+		display: inline-block;
+		margin-top: 20px;		
+	}
+	.modal-backdrop.show{
+		z-index: -1;
+	}
+	#myEditModal{
+		margin-top: 48px;	
+	}
+	#myModal{
+		margin-top: 48px;
+	}
+	#one{
+		width: 200px;
+	}
+	#two{
+		width: 200px;
+	}
+	#three{
+		width: 200px;
+	}
+    .caozuo1{
+        width: 32px;
+        height: 20px;
+        background-color: rgb(26, 148, 32);
+        color: #fff;
+    }
+    .caozuo2{
+        width: 32px;
+        height: 20px;
+        background-color: rgb(233, 115, 72);
+        color: #fff;
+    }
+    .status{
+        width: 64px;
+        height: 20px;
+        color: rgb(26, 148, 32);
+    }
+    .status2{
+        width: 64px;
+        height: 20px;
+        color: rgb(199, 70, 70);
+    }
+    .bussiness_tab tbody{
+        font-size: 12px !important;
+    }
+    #exampleFormControlSelect1{
+        width: 120px;
+    }  
+    #exampleFormControlSelect2{
+        width: 120px;
+        margin-top: 24px;
+    }  
+    .modal-backdrop.show{
+		z-index: -1;
+	}
+    #myEditModal{
+		margin-top: 42px;	
+	}
+    .form-group{
+        margin-top: 28px;
+    }
+    .form-1{
+        margin-top: 0px;
+    }
+    .btn-fa{
+        position: relative;
+        width: 100px;
+        height: 38px;
+        margin-left: 920px;
+        margin-top: -136px;
+    }
+    .form-zhi{
+        margin-top: -22px;
+    }
+    .form-zhiwei{
+        margin-top: -22px;
+    }
+    .sap2{
+        color: rgb(26, 148, 32);
+    }
+    .sap3{
+        color: rgb(199, 70, 70);
+    }
+    .qwe{
+        color: rgb(199, 70, 70);
+    }
+    .qw{
+        color: rgb(26, 148, 32);
+    }
+    .tongg{
+        background-color: rgb(26, 148, 32);
+        color: #fff;
+    }
+    .juj{
+        background-color: rgb(199, 70, 70);
+        color: #fff;
+    }
+</style>
+<div class="main">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li class="layui-this">商家审核</li>
+          <li>招聘审核</li>
+        </ul>
+        <div class="layui-tab-content">
+          <div class="layui-tab-item layui-show">
+<!--商家审核内容-->
+<div class="form-group">
+    <select class="form-control" id="three">
+        <option disabled selected hidden>全部</option>
+    </select>
+</div>
+<table id="bussiness_tab" class="table table-md">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">企业名称</th>
+            <th scope="col">联系人</th>
+            <th scope="col">联系方式</th>
+            <th scope="col">行业</th>
+            <th scope="col">所在地</th>
+            <th scope="col">公司规模</th>
+            <th scope="col">详情</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+          </div>
+          <div class="layui-tab-item">
+        <!--内容2-->
+        <!--下拉菜单-->
+            <div class="form-group form-zhi">
+                <select class="form-control" id="exampleFormControlSelect1">
+                <option disabled selected hidden>职位类型</option>
+                </select>
+            </div>
+            <!--表格-->
+            <table id="recruiment_tab1" class="table table-md">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">招聘标题</th>
+                        <th scope="col">发布人</th>
+                        <th scope="col">联系方式</th>
+                        <th scope="col">职位</th>
+                        <th scope="col">发布时间</th>
+                        <th scope="col">详情</th>
+                        <th scope="col">状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+</div>
+<script>
+	//内容一
+	var baseUrl="http://47.106.244.1:7777"
+	function lodeData(){
+		var url=baseUrl+"/Business/findAll";
+		$.get(url,function(response,status){
+			data =response.data
+			//先将tbody清空
+			$("#bussiness_tab tbody").empty();
+			//追加新的值
+			response.data.forEach(function(itme){
+                if (itme.status==='审核通过'){
+				var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">详情</a></td>
+					<td><sapn class="status">`+itme.status+`</sapn></td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}else if(itme.status==='待审核'){
+                var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">详情</a></td>
+                    <td>
+                        <a class="tongguo" href="javascript:void(0)"><span class="caozuo1">通过</span></a>    
+                        <a class="jujue" href="javascript:void(0)"><span class='caozuo2'>拒绝</span></a>    
+                    </td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)
+              }else if(itme.status==='拒绝'){
+                var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">详情</a></td>
+					<td><sapn class="status2">`+itme.status+`</sapn></td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)
+              }
+			})
+		})
+    }
+    //改变审核状态
+    $("#bussiness_tab").on("click","a",function(event){
+        switch(this.className){
+            case "tongguo":
+            var url=baseUrl+"/Business/findById"
+            var url1=baseUrl+"/Business/saveOrUpdate"
+            var id=$(this).parents("tr").children().eq(0).find("input").val()
+            var data={
+                id:id
+            }
+            $.get(url,data,function(result){
+                    var name=result.data.name
+                    var content=result.data.contactName
+                    var telephone=result.data.contactPhone
+                    var industry=result.data.industry
+                    var guimo=result.data.scale
+                    var city=result.data.location
+                    var province=result.data.province
+                    var businessLicense=result.data.businessLicense
+                    var establishedTime=result.data.establishedTime
+                    var registeredCapital=result.data.registeredCapital
+                    var description=result.data.description
+               var obj={
+                    id:id,
+					name:name,
+					contactName:content,
+					contactPhone:telephone,
+					industry:industry,
+					scale:guimo,
+                    location:city,
+                    province:province,
+                    businessLicense:businessLicense,
+                    establishedTime:establishedTime,
+                    registeredCapital:registeredCapital,
+                    description:description,
+                    status:'审核通过'
+               }
+               $.post(url1,obj,function(){
+                   lodeData()
+               })
+            })
+            break;
+            case "jujue":
+            var url=baseUrl+"/Business/findById"
+            var url1=baseUrl+"/Business/saveOrUpdate"
+            var id=$(this).parents("tr").children().eq(0).find("input").val()
+            var data={
+                id:id
+            }
+            $.get(url,data,function(result){
+                    var name=result.data.name
+                    var content=result.data.contactName
+                    var telephone=result.data.contactPhone
+                    var industry=result.data.industry
+                    var guimo=result.data.scale
+                    var city=result.data.location
+                    var province=result.data.province
+                    var businessLicense=result.data.businessLicense
+                    var establishedTime=result.data.establishedTime
+                    var registeredCapital=result.data.registeredCapital
+                    var description=result.data.description
+               var obj={
+                    id:id,
+					name:name,
+					contactName:content,
+					contactPhone:telephone,
+					industry:industry,
+					scale:guimo,
+                    location:city,
+                    province:province,
+                    businessLicense:businessLicense,
+                    establishedTime:establishedTime,
+                    registeredCapital:registeredCapital,
+                    description:description,
+                    status:'拒绝'
+               }
+               $.post(url1,obj,function(){
+                   lodeData()
+               })
+            })
+            break;
+        }
+    })
+	//文档加载完毕
+	$(function(){
+		//加载数据
+		lodeData()
+    })
+//内容二
+var baseUrl="http://47.106.244.1:7777"
+       //加载数据
+       function lodeData2(){
+              var url=baseUrl+"/Employment/findAll"
+              $.get(url,function(result){
+                //清空tbody
+                $("#recruiment_tab1 tbody").empty()
+                //追加新的值
+                result.data.forEach(function(itme,index){
+                  if(itme.auditStatus==='审核通过'){  
+                  $(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+                  <td><a href="javascript:void(0)"><span class="qw">`+itme.auditStatus+`</sapn></a></td>
+              </tr>`).appendTo("#recruiment_tab1 tbody")}else if(itme.auditStatus==='待审核'){
+                $(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+                  <td>
+                    <a class="tong" href="javascript:void(0)"><sapn class="tongg">通过</sapn></a>
+                    <a class="ju" href="javascript:void(0)"><sapn class="juj">拒绝</sapn ></a>
+                  </td>
+                  </tr>`).appendTo("#recruiment_tab1 tbody")}else if(itme.auditStatus==='已拒绝'){
+                    $(`<tr>
+                  <td><input type="checkbox" value="`+itme.id+`"></td>
+                  <td>`+itme.title+`</td>
+                  <td>`+itme.contactName+`</td>
+                  <td>`+itme.contactPhone+`</td>
+                  <td>`+itme.job+`</td>
+                  <td>`+dateParse(itme.publishTime)+`</td>
+                  <td><a class="btn_chakan" href="javascript:void(0)">查看</a></td>
+                  <td><a href="javascript:void(0)"><span class="qwe">`+itme.auditStatus+`</sapn></a></td>
+              </tr>`).appendTo("#recruiment_tab1 tbody") 
+                  }
+                })    
+              })
+        }
+       //转换时间
+       var dateParse=(dataString)=>{
+		  if(dataString){
+		    let date = new Date(dataString);
+		    let Y = date.getFullYear() + '-';
+		    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		    let D = (date.getDate()< 10 ? '0'+date.getDate() : date.getDate())+' ';
+		    let h = (date.getHours()< 10 ? '0'+date.getHours() : date.getHours())+ ':';
+		    let m = (date.getMinutes()< 10 ? '0'+date.getMinutes() : date.getMinutes())+ ':';
+		    let s = (date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds());
+		    return Y+M+D+h+m+s;
+		  }else{
+		    return '';
+		  }
+        } 
+        //改变审核状态
+            $("#recruiment_tab1").on("click","a",function(){
+                switch(this.className){
+                    case "tong":
+                    var url=baseUrl+"/Employment/findById"
+                    var id=$(this).parents("tr").children().eq(0).find("input").val()
+                    var data={
+                        id:id
+                    }
+                    $.get(url,data,function(result){
+                        var title=result.data.title
+                        var contactName=result.data.contactName
+                        var contactPhone=result.data.contactPhone
+                        var job=result.data.job
+                        var welfare=result.data.welfare
+                        var salary=result.data.salary
+                        var description=result.data.description
+                        var status=result.data.status
+                        var num=result.data.num
+                        var businessId=result.data.businessId
+                        var workingHours=result.data.workingHours
+                        var jobId=result.data.jobId
+                        var city=result.data.city
+                        var workprovinceingHours=result.data.province
+
+                        var url1=baseUrl+"/Employment/saveOrUpdate"
+                        var job={
+                            id:id,
+                            title:title,
+                            contactName:contactName,
+                            contactPhone:contactPhone,
+                            job:job,
+                            welfare:welfare,
+                            salary:salary,
+                            description:description,
+                            status:status,
+                            num:num,
+                            businessId:businessId,
+                            workingHours:workingHours,
+                            jobId:jobId,
+                            city:city,
+                            workprovinceingHours:workprovinceingHours,
+                            auditStatus:'审核通过'
+                        }
+                        $.post(url1,job,function(){
+                            lodeData2()
+                        })
+                    })
+                    break;
+                    case "ju":
+                    var url=baseUrl+"/Employment/findById"
+                    var id=$(this).parents("tr").children().eq(0).find("input").val()
+                    var data={
+                        id:id
+                    }
+                    $.get(url,data,function(result){
+                        var title=result.data.title
+                        var contactName=result.data.contactName
+                        var contactPhone=result.data.contactPhone
+                        var job=result.data.job
+                        var welfare=result.data.welfare
+                        var salary=result.data.salary
+                        var description=result.data.description
+                        var status=result.data.status
+                        var num=result.data.num
+                        var businessId=result.data.businessId
+                        var workingHours=result.data.workingHours
+                        var jobId=result.data.jobId
+                        var city=result.data.city
+                        var workprovinceingHours=result.data.province
+
+                        var url1=baseUrl+"/Employment/saveOrUpdate"
+                        var job={
+                            id:id,
+                            title:title,
+                            contactName:contactName,
+                            contactPhone:contactPhone,
+                            job:job,
+                            welfare:welfare,
+                            salary:salary,
+                            description:description,
+                            status:status,
+                            num:num,
+                            businessId:businessId,
+                            workingHours:workingHours,
+                            jobId:jobId,
+                            city:city,
+                            workprovinceingHours:workprovinceingHours,
+                            auditStatus:'已拒绝'
+                        }
+                        $.post(url1,job,function(){
+                            lodeData2()
+                        })
+                    })
+                }
+            })
+       $(function(){
+           lodeData2()
+       })
+</script>

@@ -1,0 +1,210 @@
+<div class="main">
+<!--面包屑导航-->
+<div class="main">
+    <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">客服列表</a>
+            </li>
+    </ul>
+    <!--添加按钮-->
+    <button type="button" class="btn btn-secondary btn-fa" onclick="tanModal()">添加客服</button>
+    <!--下拉菜单-->
+    <div class="form-group">
+        <select class="form-control" id="one">
+            <option  disabled selected hidden>状态</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="two">
+            <option  disabled selected hidden>性别</option>
+        </select>
+    </div>
+    
+    <!--表格-->
+    <table id="customer_tab" class="table table-md">
+			<thead class="thead-dark">
+				<tr>
+					<th style="width: 56px" scope="col">#</th>
+					<th scope="col">用户名</th>
+					<th scope="col">姓名</th>
+					<th scope="col">性别</th>
+					<th scope="col">状态</th>
+					<th scope="col">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+                
+			</tbody>
+        </table>
+<!--添加模态框-->
+<div class="modal fade" id="myEditModal">
+        <div class="modal-dialog  modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">添加客服</h4>
+            </div>
+            <div class="modal-body">
+                  <form class="form-inline">
+                    <div class="form-group">
+                        <input type="hidden" name="id" class="form-control" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-1" style="width: 800px;">
+                        <label for="exampleInputName2" class="labels">手机号</label>
+                        <input type="text" name="telephone"  style="width: 600px;" class="input7 form-control input" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 800px;">
+                      <label for="exampleInputName2" class="labels">姓名</label>
+                      <input type="text" name="name" style="width: 600px;" class="form-control input input8" id="exampleInputName2" >
+                    </div>
+                    <div class="form-group form-2" style="width: 300px;">
+                            <label for="exampleInputName2" class="labels">性别</label>
+                            <input type="radio" name="radio" checked="checked" value="男" style="width:48px; margin-left: 18px">男
+                            <input type="radio" name="radio" value="女" style="width:48px">女
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button id="commit" name="commit" type="button" class="btn btn-primary" onclick="commitData()">添加</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</div>
+<style>
+    .form-group{
+        width:160px;
+        margin-top: 20px;
+        display: inline-block;
+    } 
+    .btn-fa{
+        margin-left: 819px;
+        margin-top: -82px;
+    } 
+    .modal-backdrop.show{
+		z-index: -1;
+	}
+    #myEditModal{
+        margin-top: 42px;
+    }
+    .input8{
+        margin-left: 37px;
+    }
+    .input7{
+        margin-left: 22px;
+    }
+    .labels{
+        margin-left: 25px;
+    }
+</style>
+<script>
+	var baseUrl="http://47.106.244.1:7777"
+    //加载数据
+    function lodeData(){
+        var url=baseUrl+"/CustomerService/findAll"
+        $.get(url,function(result){
+            $("#customer_tab tbody").empty()
+            result.data.forEach(function(itme){
+                $(`<tr>
+                    <td><input type="checkbox" value="`+itme.id+`"></input></td>
+                    <td>`+itme.username+`</td>
+                    <td>`+itme.realname+`</td>
+                    <td>`+itme.gender+`</td>
+                    <td>`+itme.status+`</td>
+                    <td><a class="btn_del" href="javascript:void(0)">删除</a></td>
+                </tr>`).appendTo("#customer_tab tbody")
+            })
+        })
+    }
+    //添加模态框弹出
+    function tanModal(){
+        $("#myEditModal").modal("show")
+        $("#myEditModal input[name=telephone]").val("")
+        $("#myEditModal input[name=name]").val("")
+    }
+    //添加模态框隐藏
+    function hideModal(){
+        $("#myEditModal").modal("hide")
+    }
+    //添加数据
+    function commitData(){
+        var telephone=$("#myEditModal input[name=telephone]").val()
+        var name=$("#myEditModal input[name=name]").val()
+        var gender=$("#myEditModal input[name=radio]:checked").val()
+        console.log(gender)
+        var url=baseUrl+"/CustomerService/saveOrUpdate"
+        var data={
+            username:telephone,
+            realname:name,
+            gender:gender
+        }
+        $.post(url,data,function(result){
+            if(result.status===200){
+                hideModal()
+                lodeData()
+            }else{
+                alert("添加失败")
+            }
+        })
+    }
+    //下拉菜单添加数据
+    function optionData(){
+        var url=baseUrl+"/CustomerService/findAll"
+        $.get(url,function(result){
+            result.data.forEach(function(itme){
+            $(`<option value="`+itme.id+`">`+itme.status+`<option>`).appendTo($("#one"))    
+            $(`<option value="`+itme.gender+`">`+itme.gender+`<option>`).appendTo($("#two"))    
+            })
+        })
+    }
+    //根据性别查找(监听select)
+    function selectData(){
+        $("#two").change(function(){
+            var val=$(this).val()
+            var data={
+                gender:val
+            }
+            console.log(data)
+            var url=baseUrl+"/CustomerService/findByGender"
+            $.get(url,data,function(result){
+                $("#customer_tab tbody").empty()
+                result.data.forEach(function(itme){
+                    $(`<tr>
+                    <td><input type="checkbox" value="`+itme.id+`"></input></td>
+                    <td>`+itme.username+`</td>
+                    <td>`+itme.realname+`</td>
+                    <td>`+itme.gender+`</td>
+                    <td>`+itme.status+`</td>
+                    <td><a class="btn_del" href="javascript:void(0)">删除</a></td>
+                </tr>`).appendTo("#customer_tab tbody")
+                })
+                
+            })
+        })
+    }
+    //文档加载完毕后
+    $(function(){
+        //加载数据
+        selectData()
+        optionData()
+        lodeData()
+        //删除数据
+        $("#customer_tab").on("click","a",function(){
+            if(this.className==="btn_del"){
+                var url=baseUrl+"/CustomerService/deleteById"
+                var id=$(this).parents("tr").children().eq(0).find("input").val()
+                var data={
+                    id:id
+                }
+                $.post(url,data,function(result){
+                    if(result.status===200){
+                        lodeData()
+                    }else{
+                        alert("删除失败")
+                    }
+                })
+            }
+        })
+    })
+</script>

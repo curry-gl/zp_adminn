@@ -1,0 +1,114 @@
+<div class="main">
+    <!--下拉菜单-->
+    <div class="form-group form-shang">
+        <select class="form-control" id="one">
+            <option disabled selected hidden>全部</option>
+        </select>
+    </div>
+    <!--表格-->    
+    <table id="fuli_tab" class="table table-md">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" style="width: 60px">#</th>
+                <th scope="col">福利名称</th>
+                <th scope="col" style="width: 100px">状态</th>
+                <th scope="col" style="width: 100px">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+<style>
+    .form-shang{
+        width: 160px;
+    }
+    .caozuo{
+        width: 28px;
+        height: 16px;
+        background-color: rgb(233, 115, 72);
+        color:#fff;
+    }
+    .caozuo2{
+        width: 28px;
+        height: 16px;
+        background-color: rgb(26, 148, 32);
+        color: #fff;
+    }
+    .shiyongz{
+        color: rgb(26, 148, 32);
+    }
+    .dongjie{
+        color:rgb(233, 115, 72);
+    }
+    #fuli_tab tbody a{
+        text-decoration: none;
+    }
+    #fuli_tab tbody{
+        font-size: 12px;
+    }
+</style>
+<script>
+	var baseUrl="http://47.106.244.1:7777"
+    //加载数据
+    function lodeData(){
+        var url=baseUrl+"/Welfare/findAll"
+        $.get(url,function(result){
+            $("#fuli_tab tbody").empty()
+            result.data.forEach(function(itme){
+                if(itme.status=="使用中"){
+                $(`<tr>
+                <td><input type="checkbox" value="`+itme.id+`"></td>
+                <td>`+itme.name+`</td>
+                <td class="shiyongz">`+itme.status+`</td>
+                <td>
+                    <a href="javascript:void(0)"><div class="caozuo">冻结</div></a>
+                </td>
+            </tr>`).appendTo("#fuli_tab tbody")}else{
+                $(`<tr>
+                <td><input type="checkbox" value="`+itme.id+`"></td>
+                <td>`+itme.name+`</td>
+                <td class="dongjie">`+itme.status+`</td>
+                <td>
+                    <a href="javascript:void(0)"><div class="caozuo2">恢复</div></a>
+                </td>
+            </tr>`).appendTo("#fuli_tab tbody")
+                 }
+            })
+        })
+    }
+    //修改状态
+    $("#fuli_tab").on("click","a",function(){
+        var url=baseUrl+"/Welfare/findById"
+        var url1=baseUrl+"/Welfare/saveOrUpdate"
+        var id=$(this).parents("tr").children().eq(0).find("input").val()
+        var obj={
+            id:id
+        }
+        $.get(url,obj,function(result){
+            console.log(result.data)
+            var name=result.data.name
+            if(result.data.status==="使用中"){
+                var data={
+                id:id,
+                name:name,
+                status:"被冻结"
+            }
+            }else{
+                var data={
+                    id:id,
+                    name:name,
+                    status:"使用中"
+            }
+        }
+            $.post(url1,data,function(){
+                lodeData()
+            })
+    })
+})
+    //页面加载完成
+    $(function(){
+        lodeData()
+    })
+</script>

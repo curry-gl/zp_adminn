@@ -1,0 +1,379 @@
+﻿<style>
+	.form-group{
+		display: inline-block;
+		margin-top: 20px;		
+	}
+	.modal-backdrop.show{
+		z-index: -1;
+	}
+	#myEditModal{
+		margin-top: 48px;	
+	}
+	#myModal{
+		margin-top: 48px;
+	}
+	#one{
+		width: 200px;
+	}
+	#two{
+		width: 200px;
+	}
+	#three{
+		width: 200px;
+	}
+</style>
+<div class="main">
+		<ul class="nav nav-tabs">
+				<li class="nav-item">
+				  <a class="nav-link active" href="#">商家列表</a>
+				</li>
+		</ul>
+	<div class="form-group">
+		<select class="form-control" id="one">
+			<option  disabled selected hidden>城市</option>
+		</select>
+	</div>
+		<div class="form-group">
+			<select class="form-control" id="two">
+				<option  disabled selected hidden>行业</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<select class="form-control" id="three">
+				<option disabled selected hidden>规模</option>
+			</select>
+		</div>
+		<table id="bussiness_tab" class="table table-md">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">企业名称</th>
+					<th scope="col">联系人</th>
+					<th scope="col">联系方式</th>
+					<th scope="col">行业</th>
+					<th scope="col">所在地</th>
+					<th scope="col">公司规模</th>
+					<th scope="col">详情</th>
+					<th scope="col">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+		<!--修改模态框-->
+		<div class="modal fade" id="myEditModal">
+				<div class="modal-dialog  modal-lg" role="document">
+				  <div class="modal-content">
+					<div class="modal-header">
+					  <h4 class="modal-title">修改商户</h4>
+					</div>
+					<div class="modal-body">
+						  <form class="form-inline">
+							<div class="form-group">
+								<input type="hidden" name="id" class="form-control" id="exampleInputName2" >
+							</div>
+							<div class="form-group" style="width: 300px">
+							  <label for="exampleInputName2">公司名称:</label>
+							  <input type="text" name="name" class="form-control" id="exampleInputName2" >
+							</div>
+							<div class="form-group" style="width: 220px">
+							  <label for="exampleInputName2">所属行业:</label>
+							  <input type="text" name="industry" class="form-control" id="exampleInputName2" >
+							</div>
+							<div class="form-group"style="width: 300px">
+							  <label for="exampleInputName2">公司规模:</label>
+							  <select id="four" name="guimo" class="form-control" style="width:160px">
+								
+							  </select>
+							</div>
+							<div class="form-group"  style="width: 300px">
+							  <label for="exampleInputName2">所在城市:</label>
+							  <select id="five" name="city" class="form-control" style="width:20px">
+								
+							  </select>
+							</div>
+							<div class="form-group" style="width: 300px">
+							  <label for="exampleInputName2" style="width: 65px">联系人:</label>
+							  <input type="text" name="content" class="form-control" id="exampleInputName2" >
+							</div>
+							<div class="form-group" style="width: 300px">
+							  <label for="exampleInputName2">联系方式:</label>
+							  <input type="text" name="telephone" class="form-control" id="exampleInputName2" >
+							</div>
+							<!-- <div class="form-group">
+							  <label for="exampleInputName2">公司简介:</label>
+							  <textarea class="form-control" rows="3"></textarea>
+							</div> -->
+						  </form>
+					</div>
+					<div class="modal-footer">
+					  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					  <button id="commit" name="commit" type="button" class="btn btn-primary" onclick="commitData()">保存</button>
+					</div>
+				  </div>
+				</div>
+			  </div>
+ <!-- 详情模态框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">北京十方缘生物科技有限公司</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+					<h6>行业类型： 商务服务业</h6>
+					<h6>成立时间： 2017年09月28日</h6>
+					<h6>注册资本： 500万人民币</h6>
+			</div>
+			<div class="modal-footer">
+			  <p>北京十方缘生物科技有限公司始建于2003年1月13日，是一家集生物产品等委托生产、推广于一体的现代化股份制集团公司。公司以客户需求为经营导向，以人类大众健康为己任，提倡健康的生活方式。</p>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</div>
+<script>
+	//加载数据
+	var baseUrl="http://47.106.244.1:7777"
+	function lodeData(){
+		var url=baseUrl+"/Business/findAll";
+		$.get(url,function(response,status){
+			data =response.data
+			lodeOption()
+			//先将tbody清空
+			$("#bussiness_tab tbody").empty();
+			//追加新的值
+			response.data.forEach(function(itme){
+				if(itme.status==='审核通过'){
+				var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">详情</a></td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+						<a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>
+					</td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}
+			})
+
+		})
+		function lodeOption(){
+			data.forEach(function(itme,index){
+				$('<option value='+itme.location+'>'+itme.location+'</option>').appendTo($("#one"));
+				$('<option value='+itme.location+'>'+itme.location+'</option>').appendTo($("#four"));
+				$('<option value='+itme.industry+'>'+itme.industry+'</option>').appendTo($("#two"));
+				$('<option value='+itme.scale+'>'+itme.scale+'</option>').appendTo($("#three"));
+				$('<option value='+itme.scale+'>'+itme.scale+'</option>').appendTo($("#five"));
+			})
+		}
+	}
+	//文档加载完毕
+	$(function(){
+	//加载数据
+	var baseUrl="http://203.195.246.58:7777"
+	function lodeData(){
+		var url=baseUrl+"/Business/findAll";
+		$.get(url,function(response,status){
+			data =response.data
+			lodeOption()
+			//先将tbody清空
+			$("#bussiness_tab tbody").empty();
+			//追加新的值
+			response.data.forEach(function(itme){
+				if(itme.status==='审核通过'){
+				var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="#">详情</a></td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+						<a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></i></a>
+					</td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}
+			})
+
+		})
+
+		function lodeOption(){
+			data.forEach(function(itme,index){
+				$('<option value='+itme.location+'>'+itme.location+'</option>').appendTo($("#one"));
+				$('<option value='+itme.location+'>'+itme.location+'</option>').appendTo($("#four"));
+				$('<option value='+itme.industry+'>'+itme.industry+'</option>').appendTo($("#two"));
+				$('<option value='+itme.scale+'>'+itme.scale+'</option>').appendTo($("#three"));
+				$('<option value='+itme.scale+'>'+itme.scale+'</option>').appendTo($("#five"));
+			})
+		}
+	}
+		//加载数据
+		lodeData()
+		//给删除,修改，详情按钮绑定事件
+		$("#bussiness_tab ").on("click","a",function(event){
+			switch(this.className){
+				case "btn_del":
+				var url=baseUrl+"/Business/deleteById"
+				var id=$(this).parents("tr").children().eq(0).find("input").val()
+				var data={
+					id:id
+				}
+				$.post(url,data,function(result){
+					if(result.status===200){
+						lodeData()
+					}else{
+						alert("删除失败")
+					}
+				})
+				break;
+				case "btn_upd":
+				$("#myEditModal").modal("show")
+				var id=$(this).parents("tr").children().eq(0).find("input").val()
+				var name=$(this).parents("tr").children().eq(1).text()
+				var content=$(this).parents("tr").children().eq(2).text()
+				var telephone=$(this).parents("tr").children().eq(3).text()
+				var industry=$(this).parents("tr").children().eq(4).text()
+				$("#myEditModal input[name=id]").val(id);
+				$("#myEditModal input[name=name]").val(name);
+				$("#myEditModal input[name=content]").val(content);
+				$("#myEditModal input[name=telephone]").val(telephone);
+				$("#myEditModal input[name=industry]").val(industry);
+				break;
+				case "btn_xiangqin":
+				$("#myModal").modal("show")
+			}
+		})
+		//监听select
+		var data;
+		$("#one").change(function(){
+			var val=$(this).val()
+			var obj={
+				location:val
+			}
+			console.log(obj)
+			$('tbody').empty();
+			$.get(baseUrl+"/Business/findByLocation",obj,function(result){
+				result.data.forEach(function(itme,index){
+					if(itme.status==='审核通过'){
+					var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="#">详情</a></td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)"><i class="fa fa-trash-o"></i></a>
+						<a class="btn_upd" href="javascript:void(0)"><i class="fa fa-pencil-square-o"></a>
+					</td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}
+				})
+			})
+		})
+		$("#two").change(function(){
+			var val=$(this).val()
+			var obj={
+				industry:val
+			}
+			console.log(obj)
+			$('tbody').empty();
+			$.get(baseUrl+"/Business/findByIndustry",obj,function(result){
+				result.data.forEach(function(itme,index){
+					if(itme.status==='审核通过'){
+					var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="#">详情</a></td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)">删除</a>
+						<a class="btn_upd" data-toggle="modal" data-target="#exampleModal" href="javascript:void(0)">修改</a>
+					</td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}
+				})
+			})
+		})
+		$("#three").change(function(){
+			var val=$(this).val()
+			var obj={
+				scale:val
+			}
+			console.log(obj)
+			$('tbody').empty();
+			$.get(baseUrl+"/Business/findByScale",obj,function(result){
+				result.data.forEach(function(itme,index){
+					if(itme.status==='审核通过'){
+					var newTr=$(`<tr>
+					<th scope="row"><input type="checkbox" value="`+itme.id+`"></th>
+					<td>`+itme.name+`</td>
+					<td>`+itme.contactName+`</td>
+					<td>`+itme.contactPhone+`</td>
+					<td>`+itme.industry+`</td>
+					<td>`+itme.location+`</td>
+					<td>`+itme.scale+`</td>
+					<td><a class="btn_xiangqin" href="#">详情</a></td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)">删除</a>
+						<a class="btn_upd" data-toggle="modal" data-target="#exampleModal" href="javascript:void(0)">修改</a>
+					</td>
+			  </tr>`)
+			  $("#bussiness_tab").append(newTr)}
+				})
+			})
+		})
+	})
+	//保存方法
+	function commitData(){
+				var baseUrl="http://203.195.246.58:7777"
+				var url=baseUrl+"/Business/saveOrUpdate"
+				var id=$("#myEditModal input[name=id]").val();
+				var name=$("#myEditModal input[name=name]").val();
+				var content=$("#myEditModal input[name=content]").val();
+				var telephone=$("#myEditModal input[name=telephone]").val();
+				var industry=$("#myEditModal input[name=industry]").val();
+				var guimo=$("#myEditModal select[name=guimo]").val();
+				var city=$("#myEditModal select[name=city]").val();
+				var data={
+					id:id,
+					name:name,
+					contactName:content,
+					contactPhone:telephone,
+					industry:industry,
+					scale:guimo,
+					location:city
+				}
+				$.post(url,data,function(result){
+					if(result.status===200){
+						guanbimotaik()
+						lodeData()
+					}else{
+						alert("修改失败")
+					}
+				})
+			}
+	//关闭模态框
+	function guanbimotaik(){
+				$("#myEditModal").modal("hide")
+	}
+</script>
